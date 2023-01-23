@@ -118,12 +118,20 @@ function addUser(user){
 
 
 app.delete('/users/:id', (req, res) => {
-    const id = req.params['id'];
-    const idNum = users['users_list'].findIndex( (user) => user.id === id );
-    if (users['users_list'].at(idNum).id === id) {
-        users['users_list'].splice(idNum, 1);
+    try {
+        const id = req.params['id'];
+        const idNum = users['users_list'].findIndex( (user) => user.id === id );
+        if (users['users_list'].at(idNum).id === id) {
+            users['users_list'].splice(idNum, 1);
+        }
+        else {
+            res.status(404).send('Resource not found.');
+        }
+        res.status(204).end();
     }
-    res.status(200).end();
+    catch(error) {
+        res.status(404).send('Resource not found.');
+    }
 });
 
 
