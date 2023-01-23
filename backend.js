@@ -90,7 +90,8 @@ app.post('/users', (req, res) => {
     try {
         userToAdd.id = generateUID();
         addUser(userToAdd);
-        res.status(201).end();
+        res.status(201).send(userToAdd).end();
+        return userToAdd;
     }
     catch (error) {
         console.log(error);
@@ -102,11 +103,11 @@ function generateUID() {
     let uid = "";
     // 3 chars of lower alphabet
     for (let i = 0; i < 3; i++) {
-        uid += String.fromCharCode(97 + Math.random(26));
+        uid += String.fromCharCode(97 + Math.floor(Math.random() * 26));
     }
     // 3 chars of digits
     for (let i = 0; i < 3; i++) {
-        uid += String.fromCharCode(48 + Math.random(10));
+        uid += String.fromCharCode(48 + Math.floor(Math.random() * 10));
     }
     return uid;
 }
