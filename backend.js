@@ -87,16 +87,35 @@ const findUserByNameJob = (name, job) => {
 
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.status(200).end();
+    try {
+        userToAdd.id = generateUID();
+        addUser(userToAdd);
+        res.status(201).end();
+    }
+    catch (error) {
+        console.log(error);
+        res.status(200).end();
+    }
 });
+
+function generateUID() {
+    let uid = "";
+    // 3 chars of lower alphabet
+    for (let i = 0; i < 3; i++) {
+        uid += String.fromCharCode(97 + Math.random(26));
+    }
+    // 3 chars of digits
+    for (let i = 0; i < 3; i++) {
+        uid += String.fromCharCode(48 + Math.random(10));
+    }
+    return uid;
+}
 
 function addUser(user){
     users['users_list'].push(user);
 }
 
 
-// FIND INDEX, USE SPLICE TO DELETE, FindIndex FUNCTION
 app.delete('/users/:id', (req, res) => {
     const id = req.params['id'];
     const idNum = users['users_list'].findIndex( (user) => user.id === id );
